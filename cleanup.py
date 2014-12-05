@@ -1,8 +1,21 @@
 #!/usr/bin/env python
 import os
 import re
+import argparse
 
-def reportJsFiles():	
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-js', '--JavaScriptFolder', default='scripts', help='Name of JavaScript folder')
+
+	args = parser.parse_args()
+	args_dict = vars(args)
+
+	reportJsFiles(args_dict['JavaScriptFolder'])
+
+
+def reportJsFiles(folder):
+	print('going through dir : ' + folder)
+	
 
 	jsfiles = []
 	usedfiles = []
@@ -17,7 +30,7 @@ def reportJsFiles():
 				htmlfiles.append(os.path.join(root, file))
 
 	# get all the script files
-	for root, dirs, files in os.walk('scripts'):
+	for root, dirs, files in os.walk(folder):
 		for file in files:
 			# print(file)
 			jsfiles.append(file)
@@ -46,4 +59,4 @@ def reportJsFiles():
 	
 
 if __name__ == '__main__':
-		reportJsFiles()
+		main()
