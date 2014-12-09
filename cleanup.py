@@ -4,13 +4,13 @@ import re
 import argparse
 
 def main():
-	# parser = argparse.ArgumentParser()
-	# parser.add_argument('-js', '--JavaScriptFolder', default='scripts', help='Name of JavaScript folder')
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-js', '--JavaScriptFolder', default='scripts', help='Name of JavaScript folder')
 
-	# args = parser.parse_args()
-	# args_dict = vars(args)
+	args = parser.parse_args()
+	args_dict = vars(args)
 
-	# reportJsFiles(args_dict['JavaScriptFolder'])
+	reportJsFiles(args_dict['JavaScriptFolder'])
 
 	reportSassImports()
 
@@ -46,7 +46,7 @@ def reportSassImports():
 			print(sassfile)
 
 def reportJsFiles(folder):
-	print('going through dir : ' + folder)
+	print('JavaScript Files...')
 	
 
 	jsfiles = []
@@ -70,7 +70,7 @@ def reportJsFiles(folder):
 	# go over the html files
 	# read file, go over js files and see if file matches
 	# if yes, check for jsfile in used files list and add if needed
-	print("-----USED")
+	print('------------Used JavaScript files')
 	for htmlfile in htmlfiles:
 		fopen = open(htmlfile, 'r')
 		lines = fopen.read()
@@ -82,7 +82,7 @@ def reportJsFiles(folder):
 					print(jsfile)
 
 	# print all the js files that are not in used files
-	print("-----UNUSED")
+	print('------------Unused JavaScript files')
 	for jsfile in jsfiles:
 		if jsfile not in usedfiles:
 			print(jsfile)
