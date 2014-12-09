@@ -4,14 +4,46 @@ import re
 import argparse
 
 def main():
-	parser = argparse.ArgumentParser()
-	parser.add_argument('-js', '--JavaScriptFolder', default='scripts', help='Name of JavaScript folder')
+	# parser = argparse.ArgumentParser()
+	# parser.add_argument('-js', '--JavaScriptFolder', default='scripts', help='Name of JavaScript folder')
 
-	args = parser.parse_args()
-	args_dict = vars(args)
+	# args = parser.parse_args()
+	# args_dict = vars(args)
 
-	reportJsFiles(args_dict['JavaScriptFolder'])
+	# reportJsFiles(args_dict['JavaScriptFolder'])
 
+	reportSassImports()
+
+def reportSassImports():
+	sassregex = r'_.+\.scss$'
+	importregex = r'@import '
+	sassfiles = []
+	usedsassfiles = []
+
+	# go through all _sass files names and see if there is a matching import in main.scss
+	for root, dirs, files in os.walk('sass'):
+		for file in files:
+			if re.search(sassregex, file):
+				# remove ext and _
+				sassfiles.append(file)
+				# print(file[1:-5])
+
+	print("sassfiles len: " + str(len(sassfiles)))
+
+	fopen = open("sass/main.scss")
+	lines = fopen.read()
+	# print(lines)
+	print("------------Used Sass files")
+	for sassfile in sassfiles:
+		# '@import 'reset';
+		if re.search(r'@import [\"\']' + re.escape(sassfile[1:-5]), lines):
+			usedsassfiles.append(sassfile)
+			print(sassfile)
+
+	print("------------Unused Sass files")
+	for sassfile in sassfiles:
+		if sassfile not in usedsassfiles:
+			print(sassfile)
 
 def reportJsFiles(folder):
 	print('going through dir : ' + folder)
